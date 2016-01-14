@@ -1,6 +1,5 @@
 package com.shim.mysample;
 
-import com.shim.mysample.LocalService.LocalBinder;
 import com.shim.mysample.log.SLog;
 
 import android.app.Activity;
@@ -24,9 +23,9 @@ import android.widget.TextView;
 
 public class PendingIntentNAlarmManager extends Activity {
 
-    AlarmManager mAlarmManager;
+    static AlarmManager mAlarmManager;
     private PendingIntent mPendingIntentService;
-    private PendingIntent mPendingIntentBroadcast;
+    private static PendingIntent mPendingIntentBroadcast;
     private PendingIntent mPendingIntentActivity;
 
     @Override
@@ -46,15 +45,38 @@ public class PendingIntentNAlarmManager extends Activity {
                 SLog.v(TAG, "position : " + position);
                 switch (position) {
                 case 0:
+                    break;
+                case 1:
                     long firstTime = SystemClock.elapsedRealtime();
                     SLog.v(TAG, "position : " + firstTime);
                     mAlarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime, 5 * 1000,
                                                mPendingIntentService);
-                    
                     break;
-                case 1:
+                case 2:
                     SLog.v(TAG, "cancel : ");
                     mAlarmManager.cancel(mPendingIntentService);
+                    break;
+                case 3:
+                    mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, mPendingIntentService);
+                    break;
+                case 4:
+                    mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000,
+                                           mPendingIntentService);
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    long firstTime1 = SystemClock.elapsedRealtime();
+                    SLog.v(TAG, "position : " + firstTime1);
+                    mAlarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime1, 5 * 1000,
+                                               mPendingIntentBroadcast);
+                    break;
+                case 7:
+                    mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, mPendingIntentBroadcast);
+                    break;
+                case 8:
+                    mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000,
+                                           mPendingIntentBroadcast);
                     break;
                 default:
                     break;
@@ -62,13 +84,13 @@ public class PendingIntentNAlarmManager extends Activity {
             }
         });
 
-        mAlarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         mPendingIntentService = PendingIntent.getService(mThisContext, 1000,
                                                          new Intent(mThisContext, AlarmService.class), 0);
         mPendingIntentBroadcast = PendingIntent.getBroadcast(mThisContext, 1001,
-                                                         new Intent(mThisContext, AlarmBroadcast.class), 0);
+                                                             new Intent(mThisContext, AlarmBroadcast.class), 0);
         mPendingIntentActivity = PendingIntent.getActivity(mThisContext, 1002,
-                                                             new Intent(mThisContext, AlarmActivity.class), 0);
+                                                           new Intent(mThisContext, AlarmActivity.class), 0);
     }
 
     public static class AlarmService extends Service {
@@ -111,6 +133,7 @@ public class PendingIntentNAlarmManager extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             SLog.i("AlarmBroadcast", "onReceive() action : " + intent.getAction());
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, mPendingIntentBroadcast);
         }
     }
 
@@ -124,12 +147,15 @@ public class PendingIntentNAlarmManager extends Activity {
     }
 
     private String[] mListStrings = {
-            "00 AsyncTask test",
-            "01 AsyncTask Executor",
-            "02 bind service",
-            "03 unbind service",
-            "04 start service",
-            "05 stop service",
+            "Service",
+            "01 setRepeating ELAPSED_REALTIME_WAKEUP",
+            "02 cancel Alarm",
+            "03 set RTC_WAKEUP",
+            "04 setExact RTC_WAKEUP",
+            "BroadCast",
+            "06 setRepeating ELAPSED_REALTIME_WAKEUP",
+            "07 set RTC_WAKEUP",
+            "08 setExact RTC_WAKEUP",
     };
     private ListView mListView;
     private TextView mTextView;

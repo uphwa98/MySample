@@ -64,6 +64,9 @@ public class MainActivity extends Activity {
                 case 6:
                     mThisContext.startActivity(new Intent(mThisContext, PendingIntentNAlarmManager.class));
                     break;
+                case 7:
+                    mThisContext.startActivity(new Intent(mThisContext, FileRead.class));
+                    break;
                 default:
                     break;
                 }
@@ -150,6 +153,7 @@ public class MainActivity extends Activity {
             "04 start service",
             "05 stop service",
             "06 PendingIntentNAlarmManager",
+            "07 File Read",
     };
     private ListView mListView;
     private TextView mTextView;
