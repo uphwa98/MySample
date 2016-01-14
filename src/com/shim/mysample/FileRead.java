@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 public class FileRead extends Activity implements TextToSpeech.OnInitListener {
     TextToSpeech mTts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +41,13 @@ public class FileRead extends Activity implements TextToSpeech.OnInitListener {
                 SLog.v(TAG, "position : " + position);
                 switch (position) {
                 case 0:
-                    mTts.speak("Hello", TextToSpeech.QUEUE_ADD, null, null);
+                    mTts.speak("Hello", TextToSpeech.QUEUE_FLUSH, null, null);
                     break;
                 case 1:
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            readFile();
-                        }
-                    }).start();
+                    readFile("English_ABCD.txt");
+                    break;
+                case 2:
+                    readFile("English_EFGH.txt");
                     break;
                 default:
                     break;
@@ -66,35 +65,41 @@ public class FileRead extends Activity implements TextToSpeech.OnInitListener {
         super.onDestroy();
     }
 
-    public void readFile() {
-        try {
-            File path = Environment.getExternalStorageDirectory();
-            File file = new File(path, Environment.DIRECTORY_DOWNLOADS + "/English.txt");
-            SLog.v(TAG, "path : " + file.getPath());
-
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            String s;
-
-            while ((s = in.readLine()) != null) {
-                SLog.v(TAG, "file : " + s);
-                mTts.speak(s, TextToSpeech.QUEUE_FLUSH, null, null);
+    public void readFile(final String fileName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    File path = Environment.getExternalStorageDirectory();
+                    File file = new File(path, Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
+                    SLog.v(TAG, "path : " + file.getPath());
+
+                    BufferedReader in = new BufferedReader(new FileReader(file));
+                    String s;
+
+                    while ((s = in.readLine()) != null) {
+                        SLog.v(TAG, "file : " + s);
+                        mTts.speak(s, TextToSpeech.QUEUE_ADD, null, null);
+                        try {
+                            Thread.sleep(1800);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    in.close();
+
+                } catch (IOException e) {
+                    SLog.v(TAG, "IOException");
                 }
             }
-
-            in.close();
-            
-        } catch (IOException e) {
-            SLog.v(TAG, "IOException");
-        }
+        }).start();
     }
 
     private String[] mListStrings = {
-            "00 test",
-            "01 Listening",
+            "00 test TTS",
+            "01 Listening ABCD",
+            "02 Listening EFGH"
     };
     private ListView mListView;
     private TextView mTextView;
