@@ -38,4 +38,19 @@ public class SLog {
     public static void wtf(String tag, String msg) {
         Log.wtf(tag, msg);
     }
+
+    public static String dumpHexString(byte[] ba, int len, int lineLength) {
+        StringBuilder sb = new StringBuilder();
+        String hexNumber;
+
+        for (int x = 0; x < len; x++) {
+            if (x % lineLength == 0)
+                hexNumber = String.format("\n%02x:", ba[x]);
+            else
+                hexNumber = String.format("02x:", ba[x]);
+            sb.append(hexNumber);
+        }
+
+        return sb.toString();
+    }
 }

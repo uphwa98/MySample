@@ -32,6 +32,7 @@
         <receiver android:name=".PendingIntentNAlarmManager$AlarmBroadcast" />
         <activity android:name=".PendingIntentNAlarmManager$AlarmActivity" />
         <activity android:name=".FileRead" />
+        <activity android:name=".VariousExample" />
     </application>
 
 </manifest>

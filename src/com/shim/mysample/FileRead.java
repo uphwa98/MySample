@@ -49,6 +49,20 @@ public class FileRead extends Activity implements TextToSpeech.OnInitListener {
                 case 2:
                     readFile("English_EFGH.txt");
                     break;
+                case 3:
+                    File mediaStorageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                    SLog.v(TAG, "DOWNLOADS : " + mediaStorageDir);
+                    for (String file : mediaStorageDir.list()) {
+                        SLog.v(TAG, "fileName : " + file);
+                    }
+                    break;
+                case 4:
+                    File dir = Environment.getExternalStorageDirectory();
+                    SLog.v(TAG, "getExternalStorageDirectory : " + dir);
+                    for (String file : dir.list()) {
+                        SLog.v(TAG, "fileName : " + file);
+                    }
+                    break;
                 default:
                     break;
                 }
@@ -99,7 +113,10 @@ public class FileRead extends Activity implements TextToSpeech.OnInitListener {
     private String[] mListStrings = {
             "00 test TTS",
             "01 Listening ABCD",
-            "02 Listening EFGH"
+            "02 Listening EFGH",
+            "03 getExternalStoragePublicDirectory",
+            "04 getExternalStorageDirectory",
+            
     };
     private ListView mListView;
     private TextView mTextView;
