@@ -5,6 +5,8 @@ import com.shim.mysample.log.SLog;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +39,17 @@ public class TemplateActivity extends Activity {
             }
         });
     }
+
+    private Handler mUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case 0:
+                mTextView.append(msg.obj + "\n");
+                break;
+            }
+        }
+    };
 
     private String[] mListStrings = {
             "00 AsyncTask test",

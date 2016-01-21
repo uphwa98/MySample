@@ -1,5 +1,7 @@
 package com.shim.mysample.log;
 
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class SLog {
@@ -52,5 +54,10 @@ public class SLog {
         }
 
         return sb.toString();
+    }
+
+    public static void sendMessageToUi(Handler handler, int what, String str) {
+        Message msg = handler.obtainMessage(what, str);
+        handler.sendMessage(msg);
     }
 }

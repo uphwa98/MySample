@@ -70,6 +70,9 @@ public class MainActivity extends Activity {
                 case 8:
                     mThisContext.startActivity(new Intent(mThisContext, VariousExample.class));
                     break;
+                case 9:
+                    mThisContext.startActivity(new Intent(mThisContext, BluetoothActivity.class));
+                    break;
                 default:
                     break;
                 }
@@ -158,6 +161,7 @@ public class MainActivity extends Activity {
             "06 PendingIntentNAlarmManager",
             "07 File Read",
             "08 Various Example",
+            "09 BluetoothActivity",
     };
     private ListView mListView;
     private TextView mTextView;

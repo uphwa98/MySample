@@ -8,7 +8,8 @@
         android:minSdkVersion="19"
         android:targetSdkVersion="23" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:allowBackup="true"
@@ -33,6 +34,7 @@
         <activity android:name=".PendingIntentNAlarmManager$AlarmActivity" />
         <activity android:name=".FileRead" />
         <activity android:name=".VariousExample" />
+        <activity android:name=".BluetoothActivity" />
     </application>
 
 </manifest>

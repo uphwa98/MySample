@@ -1,11 +1,5 @@
 package com.shim.mysample;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
 import com.shim.mysample.log.SLog;
 
 import android.app.Activity;
@@ -20,7 +14,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class VariousExample extends Activity {
+public class BluetoothActivity extends Activity {
+
+    private BluetoothTask btTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,35 +35,24 @@ public class VariousExample extends Activity {
                 SLog.v(TAG, "position : " + position);
                 switch (position) {
                 case 0:
-                    DateFormat[] formats = new DateFormat[] {
-                            DateFormat.getDateInstance(),
-                            DateFormat.getDateTimeInstance(),
-                            DateFormat.getTimeInstance(),
-                    };
-
-                    for (DateFormat df : formats) {
-                        SLog.v(TAG, "default : " + df.format(new Date(0)));
-
-                        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        SLog.v(TAG, "UTC : " + df.format(new Date(0)));
-
-                        df.setTimeZone(TimeZone.getTimeZone("GMT+09"));
-                        SLog.v(TAG, "GMT+09 : " + df.format(new Date(0)));
-                    }
+                    btTask.connect(0);
                     break;
                 case 1:
-                    String DATE_FORMAT = "MM-dd HH:mm:ss.SSS";
-                    long curTime = System.currentTimeMillis();
-                    Date date = new Date(curTime);
-                    SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.KOREA);
-                    SLog.v(TAG, "SimpleDateFormat : " + sdf.format(date));
+                    btTask.connect(1);
                     break;
-
+                case 2:
+                    btTask.write("Hello".getBytes());
+                    break;
+                case 3:
+                    btTask.disconnect();
+                    break;
                 default:
                     break;
                 }
             }
         });
+
+        btTask = new BluetoothTask(mThisContext, mUiHandler);
     }
 
     private Handler mUiHandler = new Handler() {
@@ -81,8 +67,10 @@ public class VariousExample extends Activity {
     };
 
     private String[] mListStrings = {
-            "00 DateFormat",
-            "01 SimpleDateFormat",
+            "00 connect 1",
+            "01 connect 2",
+            "02 send data",
+            "03 disconnect",
     };
     private ListView mListView;
     private TextView mTextView;
